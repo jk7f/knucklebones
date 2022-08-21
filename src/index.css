@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dice-0 {
+  animation-fill-mode: forwards;
+  animation-name: destroy;
+  animation-duration: 200ms;
+}
+
+@keyframes destroy {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  33% {
+    transform: rotate(45deg);
+  }
+  66% {
+    transform: rotate(-45deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.dupe-1 .dice-1,
+.dupe-2 .dice-2,
+.dupe-3 .dice-3,
+.dupe-4 .dice-4,
+.dupe-5 .dice-5,
+.dupe-6 .dice-6 {
+  @apply bg-slate-400;
+}
