@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PlayerState } from ".";
 import { PlayArea } from "./components/PlayArea";
+import WinnerIndicator from "./components/WinnerIndicator";
 
 function getRandomInt(max: number) {
   return 1 + Math.floor(Math.random() * max);
@@ -23,12 +24,15 @@ const playerState = {
 };
 
 function App() {
+  const [winner, setWinner] = useState<null | number>(null);
   const [gameState, setGameState] = useState([
     { ...playerState, playerId: 0, diceToPlay: getRandomInt(6) },
     { ...playerState, playerId: 1 },
   ]);
   const playerAction = (playerId: number, row: number, val: number) => {
-    const stateCopy = JSON.parse(JSON.stringify(gameState));
+    const stateCopy: [PlayerState, PlayerState] = JSON.parse(
+      JSON.stringify(gameState)
+    );
     const setRowTotals = (player: PlayerState) => {
       player.rowTotals.forEach((_, rowIndex) => {
         let result = 0;
@@ -84,13 +88,33 @@ function App() {
     setTotal(stateOfOpponent);
 
     setGameState(stateCopy);
+
+    const isGameOver = stateOfPlayer.dice.reduce((prev, cur) => {
+      if (cur.includes(0)) {
+        return false;
+      }
+      return prev;
+    }, true);
+    if (isGameOver) {
+      const p1Score = stateCopy[0].total;
+      const p2Score = stateCopy[1].total;
+      if (p1Score > p2Score) {
+        setWinner(0);
+      } else if (p2Score > p1Score) {
+        setWinner(1);
+      } else {
+        // draw
+        setWinner(2);
+      }
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between items-center py-4">
+    <div className="absolute inset-0 flex flex-col justify-between items-center py-4">
       <div style={{ transform: "rotate(180deg)" }}>
         <PlayArea {...gameState[0]} playerAction={playerAction}></PlayArea>
       </div>
+      <WinnerIndicator winner={winner}></WinnerIndicator>
       <PlayArea {...gameState[1]} playerAction={playerAction}></PlayArea>
     </div>
   );

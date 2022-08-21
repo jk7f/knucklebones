@@ -33,3 +33,48 @@
 .dupe-6 .dice-6 {
   @apply bg-slate-400;
 }
+
+.dice-inner > div {
+  border-radius: 50%;
+  /* @apply w-1;
+  @apply h-1; */
+}
+
+.dice-1 .d2-2 {
+  @apply bg-slate-800;
+}
+
+.dice-2 .d3-1,
+.dice-2 .d1-3 {
+  @apply bg-slate-800;
+}
+
+.dice-3 .d3-1,
+.dice-3 .d1-3,
+.dice-3 .d2-2 {
+  @apply bg-slate-800;
+}
+
+.dice-4 .d1-1,
+.dice-4 .d1-3,
+.dice-4 .d3-1,
+.dice-4 .d3-3 {
+  @apply bg-slate-800;
+}
+
+.dice-5 .d1-1,
+.dice-5 .d1-3,
+.dice-5 .d3-1,
+.dice-5 .d3-3,
+.dice-5 .d2-2 {
+  @apply bg-slate-800;
+}
+
+.dice-6 .d1-1,
+.dice-6 .d1-3,
+.dice-6 .d3-1,
+.dice-6 .d3-3,
+.dice-6 .d2-1,
+.dice-6 .d2-3 {
+  @apply bg-slate-800;
+}
