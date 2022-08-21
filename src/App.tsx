@@ -1,20 +1,6 @@
 import { useState } from "react";
-
-interface PlayerState {
-  playerId: number;
-  total: number;
-  rowTotals: [number, number, number];
-  diceToPlay: number;
-  dice: [
-    [number, number, number],
-    [number, number, number],
-    [number, number, number]
-  ];
-}
-
-interface PlayAreaProps extends PlayerState {
-  playerAction: (playerId: number, row: number, val: number) => void;
-}
+import { PlayerState } from ".";
+import { PlayArea } from "./components/PlayArea";
 
 function getRandomInt(max: number) {
   return 1 + Math.floor(Math.random() * max);
@@ -24,11 +10,15 @@ const playerState = {
   playerId: null,
   total: 0,
   diceToPlay: 0,
-  rowTotals: [0, 0, 0],
+  rowTotals: [0, 0, 0] as [number, number, number],
   dice: [
     [0, 0, 0],
     [0, 0, 0],
     [0, 0, 0],
+  ] as [
+    [number, number, number],
+    [number, number, number],
+    [number, number, number]
   ],
 };
 
@@ -107,71 +97,3 @@ function App() {
 }
 
 export default App;
-
-function PlayArea(props: PlayAreaProps) {
-  function selectSlot(row: number, val: number) {
-    if (props.diceToPlay > 0) {
-      props.playerAction(props.playerId, row, val);
-    }
-  }
-
-  function getDuplicatesClass(row: [number, number, number]): string {
-    const duplicates = [...row]
-      .sort()
-      .filter((val, index, arr) => arr.indexOf(val) !== index);
-    if (duplicates.length) {
-      return "dupe-" + duplicates[0];
-    }
-
-    return "";
-  }
-
-  return (
-    <div className="flex ">
-      <RollAnim value={props.diceToPlay}></RollAnim>
-      <div className="flex  items-start">
-        {props.dice.map((row, index) => (
-          <div
-            className={
-              "flex flex-col gap-2 border-4 border-transparent hover:border-slate-200 " +
-              getDuplicatesClass(row)
-            }
-            onClick={() => selectSlot(index, props.diceToPlay)}
-            key={index}
-          >
-            <div className="w-10 h-50 rounded bg-slate-100 flex justify-center items-center">
-              {props.rowTotals[index]}
-            </div>
-            {row.map((col, colIndex) => (
-              <DiceSlot value={col} key={colIndex}></DiceSlot>
-            ))}
-          </div>
-        ))}
-        <div className="w-10 h-50 rounded bg-slate-100 flex justify-center items-center mt-1 ml-2">
-          {props.total}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function RollAnim({ value }: { value: number }) {
-  return (
-    <div className="w-10 h-10 rounded bg-slate-100 flex justify-center items-center mr-2">
-      {value}
-    </div>
-  );
-}
-
-function DiceSlot({ value }: { value: number }) {
-  return (
-    <div
-      className={
-        "w-10 h-10 rounded bg-slate-300 flex justify-center items-center dice-" +
-        value
-      }
-    >
-      {value}
-    </div>
-  );
-}
